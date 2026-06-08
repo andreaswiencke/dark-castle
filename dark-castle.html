@@ -3204,9 +3204,16 @@ async function boot(root) {
   ui = createUI(root);
   audio = createAudio();
   addMuteButton(root);
-  addLangSwitch(root);
+  const langSwitch = addLangSwitch(root);
   help = ui.helpButton(() => currentHint(activeState));
-  help.hide(); // only visible during play()
+  // The language switch is shown only OUTSIDE the actual game — i.e. exactly when the
+  // help button is hidden. Tie its visibility to the inverse of the help button's.
+  const showHelp = help.show, hideHelp = help.hide;
+  help = {
+    show: () => { showHelp(); langSwitch.hide(); },
+    hide: () => { hideHelp(); langSwitch.show(); },
+  };
+  help.hide(); // only visible during play(); the switch is shown everywhere else
   audio.play("intro"); // queue title music; the splash click below unlocks audio
   // The "THE NEW STYLE presents" splash waits for a click/Space — that first gesture
   // satisfies the browser autoplay policy, so the title music then plays through the
@@ -3458,6 +3465,7 @@ function addLangSwitch(root) {
   wrap.appendChild(de);
   wrap.appendChild(en);
   root.appendChild(wrap);
+  return { show() { wrap.style.display = ""; }, hide() { wrap.style.display = "none"; } };
 }
 
 // Boot once the DOM is ready.
