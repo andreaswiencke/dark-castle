@@ -11,8 +11,8 @@ two-storey house — guiding him through 13 locations, collecting items and
 solving puzzles along the way. The interface is available in **English and
 German** (it follows your browser language; switch any time, top-left).
 
-The port stays true to the 1992 original; intentional deviations (bug fixes
-that unblock progress, etc.) are documented in [`PORT-NOTES.md`](PORT-NOTES.md).
+The port stays true to the 1992 original, changing only the minimum needed to
+keep the game completable (a few progress-blocking bugs were fixed).
 
 ## Running
 
