@@ -29,7 +29,6 @@ let ui;
 let audio;
 let help = null;          // corner help button (mounted in boot, shown only during play)
 let activeState = null;   // the live game state, so the help button can read currentHint
-let backstoryRead = false;
 
 async function boot(root) {
   ui = createUI(root);
@@ -70,8 +69,8 @@ async function anleitung() {
   ui.clear();
   ui.print([{ text: "A n l e i t u n g", pen: 12 }, { text: "", pen: 7 }]);
   const read = await ui.confirm("Haben sie die Vorgeschichte schon gelesen ?");
-  if (!(read || backstoryRead)) {
-    ui.print([{ text: "Bitte lesen sie die Vorgeschichte zuerst !", pen: 4 }]);
+  if (!read) {
+    ui.print([{ text: "Lesen sie erst die Vorgeschichte!", pen: 4 }]);
     await ui.pressToContinue();
     return;
   }
@@ -82,7 +81,6 @@ async function anleitung() {
 async function vorgeschichte() {
   await ui.page(TEXTS.backstoryP1, { title: "V o r g e s c h i c h t e" });
   await ui.page(TEXTS.backstoryP2, { title: "V o r g e s c h i c h t e" });
-  backstoryRead = true;
 }
 
 async function codeEntry() {

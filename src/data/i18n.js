@@ -3,6 +3,7 @@
 // translates what the player sees. Generated from the German source strings, so
 // keys must match the on-screen German verbatim. "%d" is filled in at runtime.
 export const MESSAGES = {
+  "Lesen sie erst die Vorgeschichte!": "Read the backstory first!",
   "  1 ........ für die Anleitung": "  1 ........ for the instructions",
   "  2 ........ für die Vorgeschichte": "  2 ........ for the backstory",
   "  3 ........ um einen Code einzugeben": "  3 ........ to enter a code",
