@@ -10,6 +10,11 @@ permissions:
   pages: write
   id-token: write
 
+# Run all JavaScript actions (incl. the ones nested inside the Pages actions) on
+# Node 24, so the Node 20 runtime deprecation warning goes away.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 # Allow only one concurrent deployment, skipping runs queued between the
 # in-progress and latest queued run.
 concurrency:
@@ -20,10 +25,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - name: Build single-file game
         run: npm run build
       - name: Assemble site
