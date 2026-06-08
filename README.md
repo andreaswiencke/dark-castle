@@ -4,9 +4,12 @@ A faithful, playable **web remake** of *Dark Castle*, a German parser text
 adventure for the Commodore Amiga, originally written in AMOS Basic V1.3 in
 1992 by *The New Style* (Freeware).
 
+**▶ Play it online: https://andreaswiencke.github.io/dark-castle/**
+
 Uncle Albert recounts how he rescued his kidnapped wife **Agathe** from a
 two-storey house — guiding him through 13 locations, collecting items and
-solving puzzles along the way.
+solving puzzles along the way. The interface is available in **English and
+German** (it follows your browser language; switch any time, top-left).
 
 The port stays true to the 1992 original; intentional deviations (bug fixes
 that unblock progress, etc.) are documented in [`PORT-NOTES.md`](PORT-NOTES.md).
