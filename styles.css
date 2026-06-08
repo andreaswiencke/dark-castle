@@ -1,0 +1,216 @@
+/* Dark Castle — Amiga-style look */
+
+/* The original Amiga system font (Topaz, Kickstart 1.x / Amiga 500). A faithful
+   TrueType remake by dMG/Trueschool (github.com/rewtnull/amigafonts, GPL-FE).
+   It's an 8px bitmap font, so it stays crispest at multiples of 8 (16/24/32px). */
+@font-face {
+  font-family: "Topaz";
+  src: url("assets/fonts/Topaz_a500_v1.0.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #000018;            /* dark Amiga blue-black */
+  --frame: #6a6a8a;
+  --frame2: #2a2a44;
+  --pen0:#000000; --pen1:#ffffff;
+  --pen2:#ffd86b; --pen4:#ff5a4d; --pen5:#6bd0ff; --pen7:#ffffff;
+  --pen9:#6bff7a; --pen10:#ffa94d; --pen11:#c08bff; --pen12:#4da6ff;
+  --pen13:#ff8bd0; --pen14:#9bffd0; --pen15:#ffe066;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; height: 100%;
+  background: #11131a;
+  color: var(--pen7);
+  font-family: "Topaz", "Courier New", ui-monospace, monospace;
+  font-size: 16px;        /* base; Topaz is sharpest at multiples of 8 */
+}
+
+#amiga {
+  max-width: 760px;
+  margin: 0 auto;
+  height: 100vh;       /* fixed to the viewport so the page itself never scrolls */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border-left: 2px solid var(--frame2);
+  border-right: 2px solid var(--frame2);
+}
+
+#screen1 {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  min-height: 0;       /* allow this flex child to shrink so #text can scroll inside it */
+  overflow: hidden;
+}
+
+#bild {
+  flex: 0 0 auto;
+  height: 120px;
+  margin-bottom: 8px;
+  border: 1px solid var(--frame2);
+  background:
+    repeating-linear-gradient(45deg, #14142c 0 10px, #10101f 10px 20px);
+  color: var(--frame);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 13px;
+  image-rendering: pixelated;
+}
+#bild img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+.mute {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  font: inherit;
+  font-size: 16px;
+  color: var(--pen7, #c8c8c8);
+  background: #07070f;
+  border: 1px solid var(--frame2, #444);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+.mute:hover { opacity: 1; }
+
+/* Intro: big castle picture on top, single-line horizontal ticker band below
+   (like the original Amiga scroller). */
+.intro { display: flex; flex-direction: column; height: 100%; gap: 6px; }
+.intro-pic { flex: 1 1 auto; min-height: 0; width: 100%; object-fit: contain; image-rendering: pixelated; }
+.marquee-clip { flex: 0 0 auto; width: 100%; height: 1.8em; overflow: hidden; display: flex; align-items: center; }
+.intro-text { flex: 0 0 auto; text-align: center; padding: 4px 0; }
+.fade-black { position: fixed; inset: 0; background: #000; opacity: 0; z-index: 50; pointer-events: none; }
+.marquee-lane { display: flex; flex-wrap: nowrap; white-space: nowrap; will-change: transform; }
+.marquee-item {
+  white-space: nowrap;
+  padding-right: 160px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--pen7, #c8c8c8);
+}
+
+/* Ending credits: the sunset picture stays fixed on top, the credits scroll only
+   in the band below it (as in the original — the text never rises over the picture). */
+.endscreen { display: flex; flex-direction: column; height: 100%; }
+.end-pic { flex: 0 0 auto; width: 100%; height: auto; max-height: 72%; object-fit: contain; image-rendering: pixelated; }
+.end-clip { flex: 1 1 auto; min-height: 0; overflow: hidden; position: relative; }
+.end-scroll { position: absolute; left: 0; right: 0; top: 0; will-change: transform; }
+
+#text {
+  flex: 1 1 auto;
+  min-height: 0;       /* required so the text area scrolls instead of growing the page */
+  overflow-y: auto;
+  line-height: 1.45;
+  font-size: 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#text .ln { margin: 0; }
+#text .blank { height: 0.7em; }
+
+#screen2 {
+  flex: 0 0 auto;
+  background: #07070f;
+  border-top: 2px solid var(--frame2);
+  padding: 10px 12px;
+  min-height: 150px;
+}
+
+/* verb menu */
+.verbgrid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: start; }
+.verbcol { display: flex; flex-direction: column; gap: 6px; }
+.btn {
+  font-family: inherit; font-size: 16px;
+  background: #14142c; color: var(--pen2);
+  border: 1px solid var(--frame2); border-radius: 3px;
+  padding: 8px 10px; cursor: pointer; text-align: left;
+  min-height: 40px;
+}
+.btn:hover, .btn:focus { background: #20204a; color: var(--pen15); outline: none; }
+.btn:active { background: #2c2c5e; }
+
+.cross { display: grid; grid-template-columns: 40px 40px 40px; grid-template-rows: 40px 40px 40px; gap: 4px; justify-content: center; }
+.cross .btn { text-align: center; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--pen9); }
+.cross .v { grid-column: 2; grid-row: 1; }
+.cross .l { grid-column: 1; grid-row: 2; }
+.cross .r { grid-column: 3; grid-row: 2; }
+.cross .h { grid-column: 2; grid-row: 3; }
+.cross .mid { grid-column: 2; grid-row: 2; opacity: 0.3; border: none; background: none; }
+
+/* prompt input */
+.prompt { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.prompt label { color: var(--pen2); }
+.prompt input {
+  flex: 1 1 160px; font-family: inherit; font-size: 16px;
+  background: #02020a; color: var(--pen7);
+  border: 1px solid var(--frame); padding: 8px; border-radius: 3px;
+}
+
+/* click-to-pick nouns (room objects + inventory) */
+.nounpick { display: flex; flex-direction: column; gap: 4px; }
+.nountitle { color: var(--pen2); margin-bottom: 2px; }
+.noungroup { color: var(--pen9); font-size: 13px; letter-spacing: 1px; margin-top: 4px; }
+.nounrow { display: flex; gap: 6px; flex-wrap: wrap; }
+.nounrow .btn { text-align: center; }
+.btn.cancel { align-self: flex-start; color: var(--pen4); margin-top: 8px; min-height: 32px; }
+
+/* menu / overlay actions */
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.menu-list .btn { color: var(--pen7); font-size: 16px; }
+
+/* tresor */
+.tresor-digits { font-size: 32px; letter-spacing: 10px; text-align: center; color: var(--pen15); margin: 6px 0; white-space: pre; }
+.tresor-pos { font-size: 32px; letter-spacing: 10px; text-align: center; color: var(--pen5); white-space: pre; margin-top: -4px; }
+.tresor-time { text-align: center; color: var(--pen4); margin: 6px 0; }
+
+.center { text-align: center; }
+.title { color: var(--pen12); font-size: 24px; text-align: center; margin: 8px 0 16px; letter-spacing: 2px; }
+
+/* help system */
+.help-btn {
+  position: fixed; top: 8px; left: 8px; z-index: 10;
+  font: inherit; font-size: 16px; color: var(--pen2);
+  background: #07070f; border: 1px solid var(--frame2); border-radius: 4px;
+  padding: 6px 12px; cursor: pointer; opacity: 0.9;
+}
+.help-btn:hover { opacity: 1; }
+
+/* DE/EN language switch, just below the help button (top-left corner) */
+.lang-switch { position: fixed; top: 44px; left: 8px; z-index: 10; display: flex; gap: 4px; }
+.lang-switch button {
+  font: inherit; font-size: 13px; color: var(--pen7);
+  background: #07070f; border: 1px solid var(--frame2); border-radius: 4px;
+  padding: 4px 8px; cursor: pointer; opacity: 0.85;
+}
+.lang-switch button:hover { opacity: 1; }
+.lang-switch button.active { color: var(--pen2); background: #14142c; border-color: var(--frame); opacity: 1; }
+
+.help-overlay {
+  position: fixed; inset: 0; z-index: 60; display: flex;
+  align-items: center; justify-content: center;
+  background: rgba(0, 0, 24, 0.72);
+}
+.help-box {
+  max-width: 520px; margin: 0 16px; padding: 18px 20px;
+  background: #0c0c20; border: 2px solid var(--frame); border-radius: 6px;
+}
+.help-text { color: var(--pen14); line-height: 1.5; margin-bottom: 14px; min-height: 3em; }
+
+@media (max-width: 520px) {
+  #text { font-size: 16px; }
+  .btn { font-size: 16px; }
+  .title { font-size: 16px; }   /* keep spaced titles on one line on narrow screens */
+}

@@ -1,0 +1,24 @@
+Topaz — Amiga system font (TrueType remake)
+===========================================
+
+File: Topaz_a500_v1.0.ttf  (Topaz, Kickstart 1.x / Amiga 500 variant)
+
+Copyright
+---------
+Topaz is © Amiga Inc.
+The ttf, fon, eot, raw & psf v1/v2 versions of Topaz are © dMG / t!s^dS!
+(dMG of Trueschool).
+
+Source
+------
+https://github.com/rewtnull/amigafonts
+
+License
+-------
+Released under the GPL-FE (GNU General Public License with the Font Exception):
+https://www.gnu.org/licenses/gpl-faq.html#FontException
+
+Under the Font Exception, embedding this font in a document (such as this
+game's web page) does not place the document itself under the GPL. The font
+file is redistributed here unmodified, with this attribution and license
+notice, as required.
