@@ -24,17 +24,21 @@
 * { box-sizing: border-box; }
 
 html, body {
-  margin: 0; height: 100%;
+  margin: 0;
+  height: 100vh;          /* fallback for browsers without dynamic viewport units */
+  height: 100dvh;         /* fit the *visible* mobile viewport (URL-bar aware), not behind it */
   background: #11131a;
   color: var(--pen7);
   font-family: "Topaz", "Courier New", ui-monospace, monospace;
   font-size: 16px;        /* base; Topaz is sharpest at multiples of 8 */
+  overflow: hidden;       /* whole game fits one screen; the page never scrolls (text scrolls inside #text) */
 }
 
 #amiga {
   max-width: 760px;
   margin: 0 auto;
-  height: 100vh;       /* fixed to the viewport so the page itself never scrolls */
+  height: 100vh;       /* fallback */
+  height: 100dvh;      /* match the visible viewport so the page itself never scrolls */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -130,7 +134,9 @@ html, body {
 }
 
 /* verb menu */
-.verbgrid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: start; }
+/* minmax(0,1fr) lets the two verb columns shrink below their content (text wraps)
+   so the menu always fits the viewport width — no horizontal scroll on phones. */
+.verbgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 8px; align-items: start; }
 .verbcol { display: flex; flex-direction: column; gap: 6px; }
 .btn {
   font-family: inherit; font-size: 16px;
@@ -209,8 +215,18 @@ html, body {
 }
 .help-text { color: var(--pen14); line-height: 1.5; margin-bottom: 14px; min-height: 3em; }
 
-@media (max-width: 520px) {
+/* Phones: tighten everything so the whole game fits one screen, no sideways scroll. */
+@media (max-width: 560px) {
+  #screen1 { padding: 8px; }
+  #bild { height: 64px; font-size: 12px; margin-bottom: 6px; }   /* the room-label box is just a caption */
   #text { font-size: 16px; }
-  .btn { font-size: 16px; }
+  #screen2 { padding: 8px; min-height: 0; }
+  .verbgrid { gap: 6px; }
+  .btn { font-size: 14px; padding: 7px 6px; min-height: 36px; }  /* shorter labels fit the narrow columns */
   .title { font-size: 16px; }   /* keep spaced titles on one line on narrow screens */
+}
+
+/* Very narrow phones: shrink the movement cross too, so it never forces overflow. */
+@media (max-width: 360px) {
+  .cross { grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(3, 34px); gap: 3px; }
 }
