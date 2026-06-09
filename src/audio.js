@@ -13,6 +13,7 @@ export function createAudio(basePath = "assets/audio/") {
   let el = null; // the single <audio> element in use
   let wantFile = null; // track that should be playing once unlocked / unmuted
   let muted = false;
+  let notify = () => {}; // fired when playback starts/stops, so the UI can show/hide the mute button
 
   function load(file) {
     if (el && el._file === file) return el;
@@ -34,10 +35,12 @@ export function createAudio(basePath = "assets/audio/") {
     wantFile = TRACKS[key] || null;
     if (!wantFile) return stop();
     tryPlay();
+    notify();
   }
   function stop() {
     wantFile = null;
     if (el) try { el.pause(); el.currentTime = 0; } catch {}
+    notify();
   }
   function setMuted(m) {
     muted = m;
@@ -52,5 +55,11 @@ export function createAudio(basePath = "assets/audio/") {
     window.addEventListener("keydown", unlock);
   }
 
-  return { play, stop, setMuted, isMuted: () => muted, supported };
+  return {
+    play, stop, setMuted,
+    isMuted: () => muted,
+    isPlaying: () => wantFile != null,           // a track is active (intro / death / ending)
+    onPlaybackChange: (cb) => { notify = cb; },   // UI hook to show the mute button only then
+    supported,
+  };
 }

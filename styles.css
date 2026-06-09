@@ -194,8 +194,9 @@ html, body {
 }
 .help-btn:hover { opacity: 1; }
 
-/* DE/EN language switch, just below the help button (top-left corner) */
-.lang-switch { position: fixed; top: 44px; left: 8px; z-index: 10; display: flex; gap: 4px; }
+/* DE/EN language switch — sits in the help button's spot (top-left). The two are
+   mutually exclusive: help shows during play, the switch shows everywhere else. */
+.lang-switch { position: fixed; top: 8px; left: 8px; z-index: 10; display: flex; gap: 4px; }
 .lang-switch button {
   font: inherit; font-size: 13px; color: var(--pen7);
   background: #07070f; border: 1px solid var(--frame2); border-radius: 4px;

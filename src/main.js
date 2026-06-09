@@ -4,7 +4,7 @@ import { makeState, applyCommand, enterRoomPublic, buildCmd, visibleObjects, cur
 import { makeTresor, applyCode } from "./specials.js";
 import { createAudio } from "./audio.js";
 import { TEXTS } from "./data/texts.js";
-import { tr, setLang, getLang, onLangChange } from "./i18n.js";
+import { tr, setLang, getLang } from "./i18n.js";
 
 const ROOM_LABELS = {
   BILD1: "Vor dem Haus", BILD2: "Hinter dem Haus", BILD3: "Kleiner Raum",
@@ -254,7 +254,8 @@ async function ending() {
   location.reload(); // after the credits (on skip), restart fresh as if the page was reloaded
 }
 
-// Small fixed music on/off toggle in the corner.
+// Small fixed music on/off toggle in the corner. Shown ONLY while music actually
+// plays (intro, death and ending screens) — hidden in the menu and during play.
 function addMuteButton(root) {
   const b = document.createElement("button");
   b.id = "mute";
@@ -263,9 +264,10 @@ function addMuteButton(root) {
   const sync = () => {
     b.textContent = tr(audio.isMuted() ? "🔇 Musik aus" : "🔊 Musik an");
     b.title = tr("Musik an/aus");
+    b.style.display = audio.isPlaying() ? "" : "none";
   };
   b.addEventListener("click", () => { audio.setMuted(!audio.isMuted()); sync(); });
-  onLangChange(sync);
+  audio.onPlaybackChange(sync); // re-evaluate visibility whenever a track starts/stops
   sync();
   root.appendChild(b);
 }
@@ -280,19 +282,17 @@ function addLangSwitch(root) {
     btn.type = "button";
     btn.textContent = code.toUpperCase();
     btn.title = code === "de" ? "Auf Deutsch umschalten" : "Switch to English";
-    btn.addEventListener("click", () => setLang(code));
+    if (getLang() === code) btn.className = "active";
+    // Persist the choice and reload so the new language takes effect immediately everywhere.
+    btn.addEventListener("click", () => {
+      if (code === getLang()) return;
+      setLang(code);
+      if (typeof location !== "undefined" && location.reload) location.reload();
+    });
     return btn;
   };
-  const de = mk("de");
-  const en = mk("en");
-  const sync = () => {
-    de.className = getLang() === "de" ? "active" : "";
-    en.className = getLang() === "en" ? "active" : "";
-  };
-  onLangChange(sync);
-  sync();
-  wrap.appendChild(de);
-  wrap.appendChild(en);
+  wrap.appendChild(mk("de"));
+  wrap.appendChild(mk("en"));
   root.appendChild(wrap);
   return { show() { wrap.style.display = ""; }, hide() { wrap.style.display = "none"; } };
 }
