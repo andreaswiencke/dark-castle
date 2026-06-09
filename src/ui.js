@@ -354,7 +354,7 @@ export function createUI(root) {
       };
       raf = requestAnimationFrame(tick);
       const wrap = document.createElement("div"); wrap.className = "actions";
-      wrap.appendChild(button("Überspringen", finish));
+      wrap.appendChild(button("Klick zum Starten", finish));
       controls(wrap);
     });
   }
